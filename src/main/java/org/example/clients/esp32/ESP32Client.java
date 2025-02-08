@@ -24,9 +24,13 @@ import org.apache.hc.core5.http.message.StatusLine;
 public class ESP32Client {
 
   private final String host;
+  private int actPan;
+  private int actTilt;
 
   public ESP32Client(String host) {
     this.host = host;
+    this.actPan = 0;
+    this.actTilt = 0;
   }
 
   /*
@@ -66,10 +70,11 @@ public class ESP32Client {
 
   /*
    * Set servo middle position
+   * Sets the actual servo position as new middle position
    * Input:
    *  - id: 1 - tilt servo, 2 - pan servo
    */
-  public JsonNode set_middle_position (int servo) {
+  public JsonNode set_middle_position(int servo) {
     String cmd = "{\"T\":502,\"id\":" + servo + "}";
     return get(cmd);
   }
@@ -80,7 +85,7 @@ public class ESP32Client {
    *  - L, R: speed of the wheel, value range 0.5 - -0.5
    */
   public JsonNode cmd_speed_control(float l, float r) {
-    String cmd = "{\"T\":1,\"L\":" + l + ",\"R\":" + r +"}";
+    String cmd = "{\"T\":1,\"L\":" + l + ",\"R\":" + r + "}";
     return get(cmd);
   }
 
@@ -92,9 +97,39 @@ public class ESP32Client {
    *  - SPD: Speed, 0 means fastest
    *  - ACC: Acceleration, 0 means fastest
    */
-  public JsonNode cmd_gimbal_ctrl_simple(int x, int y) {
-    String cmd = "{\"T\":133,\"X\":"+ x + ",\"Y\":" + y + ",\"SPD\":0,\"ACC\":0} ";
+  public JsonNode cmd_gimbal_ctrl_simple(int pan, int tilt) {
+    actPan = pan;
+    actTilt = tilt;
+    String cmd = "{\"T\":133,\"X\":" + pan + ",\"Y\":" + tilt + ",\"SPD\":0,\"ACC\":0} ";
     return get(cmd);
+  }
+
+  public JsonNode pan_right() {
+    if (actPan < 180) {
+      actPan++;
+    }
+    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+  }
+
+  public JsonNode pan_left() {
+    if (actPan > -180) {
+      actPan--;
+    }
+    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+  }
+
+  public JsonNode tilt_up() {
+    if (actPan < 90) {
+      actPan++;
+    }
+    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+  }
+
+  public JsonNode tilt_down() {
+    if (actPan > -30) {
+      actPan--;
+    }
+    return cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
   private JsonNode get(String cmd) throws RuntimeException {

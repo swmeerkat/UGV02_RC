@@ -9,9 +9,6 @@ public class Main {
 
   public static void main(String[] args) {
 
-    int x = 0;
-    int y = 0;
-
     final Properties properties = new Properties();
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
     InputStream stream = loader.getResourceAsStream("application.properties");
@@ -23,13 +20,7 @@ public class Main {
 
     String host = properties.get("UGV02.host").toString();
     ESP32Client ugv02 = new ESP32Client(host);
-    y = 20;
-    ugv02.cmd_gimbal_ctrl_simple(x, y);
-    x = -30;
-    ugv02.cmd_gimbal_ctrl_simple(x, y);
+    ugv02.cmd_gimbal_ctrl_simple(0,0);
     ugv02.cmd_speed_control(0.1f, 0.1f);
-    x = 0;
-    y = 0;
-    ugv02.cmd_gimbal_ctrl_simple(x, y);
   }
 }
