@@ -19,8 +19,8 @@ import org.example.gui.Console;
 @Slf4j
 public class Main extends JFrame implements KeyListener {
 
-    static Console console;
-    ESP32Client ugv02;
+    private Console console = null;
+    private KeyboardControl keyboardControl = null;
 
   public static void main(String[] args) {
     new Main("UGV02");
@@ -31,7 +31,8 @@ public class Main extends JFrame implements KeyListener {
     createAndShowGUI();
     final Properties properties = loadProperties();
     String host = properties.get("UGV02.host").toString();
-    this.ugv02 = initUgv02Client(host);
+    ESP32Client ugv02 = initUgv02Client(host);
+    this.keyboardControl = new KeyboardControl(ugv02);
   }
 
   private Properties loadProperties() {
@@ -97,19 +98,16 @@ public class Main extends JFrame implements KeyListener {
 
   @Override
   public void keyTyped(KeyEvent e) {
-    log.info("key char typed: {}", e.getKeyChar());
-    log.info("key code typed: {}", e.getKeyCode());
+    keyboardControl.keyTyped(e);
   }
 
   @Override
   public void keyPressed(KeyEvent e) {
-    log.info("key char pressed: {}", e.getKeyChar());
-    log.info("key code pressed: {}", e.getKeyCode());
+    keyboardControl.keyPressed(e);
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    log.info("key char released: {}", e.getKeyChar());
-    log.info("key code released: {}", e.getKeyCode());
+    keyboardControl.keyReleased(e);
   }
 }

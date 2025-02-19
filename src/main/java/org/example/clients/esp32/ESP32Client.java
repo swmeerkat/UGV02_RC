@@ -98,38 +98,38 @@ public class ESP32Client {
    *  - ACC: Acceleration, 0 means fastest
    */
   public JsonNode cmd_gimbal_ctrl_simple(int pan, int tilt) {
+    String cmd = "{\"T\":133,\"X\":" + pan + ",\"Y\":" + tilt + ",\"SPD\":0,\"ACC\":0} ";
     actPan = pan;
     actTilt = tilt;
-    String cmd = "{\"T\":133,\"X\":" + pan + ",\"Y\":" + tilt + ",\"SPD\":0,\"ACC\":0} ";
     return get(cmd);
   }
 
-  public JsonNode pan_right() {
+  public void pan_right() {
     if (actPan < 180) {
       actPan++;
     }
-    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+    cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
-  public JsonNode pan_left() {
+  public void pan_left() {
     if (actPan > -180) {
       actPan--;
     }
-    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+    cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
-  public JsonNode tilt_up() {
-    if (actPan < 90) {
-      actPan++;
+  public void tilt_up() {
+    if (actTilt < 90) {
+      actTilt++;
     }
-    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+    cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
-  public JsonNode tilt_down() {
-    if (actPan > -30) {
-      actPan--;
+  public void tilt_down() {
+    if (actTilt > -30) {
+      actTilt--;
     }
-    return cmd_gimbal_ctrl_simple(actPan, actTilt);
+    cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
   private JsonNode get(String cmd) throws RuntimeException {
@@ -159,7 +159,9 @@ public class ESP32Client {
         }
       });
       client.close();
-      log.info("Response: {}", responseData);
+      if (!responseData.isNull()) {
+        log.info("Response: {}", responseData);
+      }
     } catch (IOException e) {
       log.error(e.getMessage());
       throw new RuntimeException("ESPClientError");
