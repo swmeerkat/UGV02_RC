@@ -4,6 +4,15 @@ import java.awt.event.KeyEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.example.clients.esp32.ESP32Client;
 
+/*
+ Apple key codes:
+  - command: 157
+  - option: 18
+  - cursor up: 38
+  - cursor down: 40
+  - cursor right: 39
+  - cursor left: 37
+ */
 @Slf4j
 public class KeyboardControl {
 
@@ -19,8 +28,6 @@ public class KeyboardControl {
   }
 
   public void keyPressed(KeyEvent e) {
-    log.info("key char pressed: {}", e.getKeyChar());
-    log.info("key code pressed: {}", e.getKeyCode());
     switch (e.getKeyCode()) {
       case 18:
         optionKeyPressed = true;
@@ -29,14 +36,14 @@ public class KeyboardControl {
         if (optionKeyPressed) {
           esp32Client.pan_left();
         } else {
-          esp32Client.cmd_speed_control(-0.1f, 0.1f);
+          esp32Client.cmd_speed_control(-0.15f, 0.15f);
         }
         break;
       case 39:
         if (optionKeyPressed) {
           esp32Client.pan_right();
         } else {
-          esp32Client.cmd_speed_control(0.1f, -0.1f);
+          esp32Client.cmd_speed_control(0.15f, -0.15f);
         }
         break;
       case 38:
@@ -54,7 +61,7 @@ public class KeyboardControl {
         }
         break;
       default:
-        log.info("unexpected key code pressed: {}", e.getKeyCode());
+        log.info("unexpected key pressed: char={} code={}, ignored", e.getKeyChar(), e.getKeyCode());
         break;
     }
   }

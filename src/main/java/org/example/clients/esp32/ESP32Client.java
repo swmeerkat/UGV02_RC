@@ -106,28 +106,28 @@ public class ESP32Client {
 
   public void pan_right() {
     if (actPan < 180) {
-      actPan++;
+      actPan+=2;
     }
     cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
   public void pan_left() {
     if (actPan > -180) {
-      actPan--;
+      actPan-=2;
     }
     cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
   public void tilt_up() {
     if (actTilt < 90) {
-      actTilt++;
+      actTilt+=2;
     }
     cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
   public void tilt_down() {
     if (actTilt > -30) {
-      actTilt--;
+      actTilt-=2;
     }
     cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
