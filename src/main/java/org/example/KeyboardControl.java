@@ -12,6 +12,7 @@ import org.example.clients.esp32.ESP32Client;
   - cursor down: 40
   - cursor right: 39
   - cursor left: 37
+  - numpad '0': 96
  */
 @Slf4j
 public class KeyboardControl {
@@ -60,8 +61,12 @@ public class KeyboardControl {
           esp32Client.cmd_speed_control(-0.1, -0.1);
         }
         break;
+      case 96:
+        esp32Client.cmd_speed_control(-0, -0);
+        break;
       default:
-        log.info("unexpected key pressed: char={} code={}, ignored", e.getKeyChar(), e.getKeyCode());
+        log.info("unexpected key pressed: char={} code={}, ignored",
+            e.getKeyChar(), e.getKeyCode());
         break;
     }
   }
