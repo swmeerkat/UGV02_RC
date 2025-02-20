@@ -84,7 +84,7 @@ public class ESP32Client {
    * Input:
    *  - L, R: speed of the wheel, value range 0.5 - -0.5
    */
-  public JsonNode cmd_speed_control(float l, float r) {
+  public JsonNode cmd_speed_control(double l, double r) {
     String cmd = "{\"T\":1,\"L\":" + l + ",\"R\":" + r + "}";
     return get(cmd);
   }

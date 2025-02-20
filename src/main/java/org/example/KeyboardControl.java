@@ -36,28 +36,28 @@ public class KeyboardControl {
         if (optionKeyPressed) {
           esp32Client.pan_left();
         } else {
-          esp32Client.cmd_speed_control(-0.15f, 0.15f);
+          esp32Client.cmd_speed_control(-0.15, 0.15);
         }
         break;
       case 39:
         if (optionKeyPressed) {
           esp32Client.pan_right();
         } else {
-          esp32Client.cmd_speed_control(0.15f, -0.15f);
+          esp32Client.cmd_speed_control(0.15, -0.15);
         }
         break;
       case 38:
         if (optionKeyPressed) {
           esp32Client.tilt_up();
         } else {
-          esp32Client.cmd_speed_control(0.1f, 0.1f);
+          esp32Client.cmd_speed_control(0.1, 0.1);
         }
         break;
       case 40:
         if (optionKeyPressed) {
           esp32Client.tilt_down();
         } else {
-          esp32Client.cmd_speed_control(-0.1f, -0.1f);
+          esp32Client.cmd_speed_control(-0.1, -0.1);
         }
         break;
       default:
