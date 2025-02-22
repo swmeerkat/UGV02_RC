@@ -104,6 +104,16 @@ public class ESP32Client {
     return get(cmd);
   }
 
+  /*
+   * CMD_GIMBAL_CTRL_STOPE
+   * Stops the pan-tilt movement at any time
+   */
+  public void cmd_gimbal_ctrl_stope() {
+    String cmd = "{\"T\":133} ";
+    get(cmd);
+  }
+
+
   public void pan_right() {
     if (actPan < 180) {
       actPan+=2;
