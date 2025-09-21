@@ -168,14 +168,11 @@ public class ESP32Client {
           return objectMapper.readTree(inputStream);
         }
       });
-      client.close();
-      if (!responseData.isNull()) {
-        log.info("Response: {}", responseData);
-      }
     } catch (IOException e) {
       log.error(e.getMessage());
       throw new RuntimeException("ESPClientError");
     }
+    log.info("Response: {}", responseData);
     return responseData;
   }
 }
