@@ -63,7 +63,7 @@ public class KeyboardControl {
         break;
       case 96:
         esp32Client.cmd_speed_control(-0, -0);
-        esp32Client.cmd_gimbal_ctrl_stope();
+        esp32Client.cmd_gimbal_ctrl_stop();
         break;
       default:
         log.info("unexpected key pressed: char={} code={}, ignored",
