@@ -61,6 +61,9 @@ public class KeyboardControl {
           esp32Client.cmd_speed_control(-0.1, -0.1);
         }
         break;
+      case 76:
+        esp32Client.turn_pan_tilt_led();
+        break;
       case 96:
         esp32Client.cmd_speed_control(-0, -0);
         esp32Client.cmd_gimbal_ctrl_stop();

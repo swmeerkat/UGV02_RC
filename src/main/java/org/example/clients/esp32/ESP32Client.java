@@ -26,11 +26,13 @@ public class ESP32Client {
   private final String host;
   private int actPan;
   private int actTilt;
+  private boolean panTiltLed;
 
   public ESP32Client(String host) {
     this.host = host;
     this.actPan = 0;
     this.actTilt = 0;
+    this.panTiltLed = false;
   }
 
   /*
@@ -142,6 +144,23 @@ public class ESP32Client {
     cmd_gimbal_ctrl_simple(actPan, actTilt);
   }
 
+  /*
+   *  CMD_LED_CTRL
+   *  IO5 controls pan-tilt LED
+   */
+  public void turn_pan_tilt_led() {
+    int brightness;
+    if (!panTiltLed) {
+      panTiltLed = true;
+      brightness = 255;
+    } else {
+      panTiltLed = false;
+      brightness = 0;
+    }
+    String cmd = "{\"T\":132, \"IO4\":0,\"IO5\":" + brightness + "}";
+    get(cmd);
+  }
+
   private JsonNode get(String cmd) throws RuntimeException {
     JsonFactory jsonFactory = new JsonFactory();
     ObjectMapper objectMapper = new ObjectMapper(jsonFactory);
@@ -168,11 +187,15 @@ public class ESP32Client {
           return objectMapper.readTree(inputStream);
         }
       });
+      if (responseData != null) {
+        if (responseData.get(0) != null) {
+          log.info("Response: {}", responseData);
+        }
+      }
     } catch (IOException e) {
       log.error(e.getMessage());
       throw new RuntimeException("ESPClientError");
     }
-    log.info("Response: {}", responseData);
     return responseData;
   }
 }

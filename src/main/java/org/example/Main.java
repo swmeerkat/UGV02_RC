@@ -51,8 +51,8 @@ public class Main extends JFrame implements KeyListener {
   private ESP32Client initUgv02Client(String host) {
     ESP32Client ugv02 = new ESP32Client(host);
     console.append("ugv02 host: " + host + "\n");
-    JsonNode response = ugv02.cmd_gimbal_ctrl_simple(0, 0);
-    console.append("cmd_gimbal_ctrl_simple(0, 0): " + response.toString() + "\n");
+    console.append("cmd_gimbal_ctrl_simple(0, 0)\n");
+    ugv02.cmd_gimbal_ctrl_simple(0, 0);
     //ugv02.cmd_speed_control(0.1, 0.1);
     return ugv02;
   }
